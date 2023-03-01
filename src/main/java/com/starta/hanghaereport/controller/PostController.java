@@ -24,33 +24,39 @@ public class PostController {
     @PostMapping ("/api/posts") //request 종류 Post
     //Post는 반환타입 , createPost : 메소드명 (원하는대로)
     public Post createPost(@RequestBody PostRequestDto requestDto) {
-        //RequestBody: Post안에 저장된 body 값들을 key:value 형태 (JSON 형태) 로 짝지음 body에 들어오는 데이터들을 가지고 오는 역할 --> Controller에서만 들어가는 부분
+        //RequestBody: Post 안에 저장된 body 값들을 key:value 형태 (JSON 형태) 로 짝지음 body 에 들어오는 데이터들을 가지고 오는 역할 --> Controller에서만 들어가는 부분
         //PostRequestDto : JSON 타입으로 넘어오는 데이터를 받는 객체(데이터를 저장할 공간)
-        //requestDto : 매게변수
-        //메개변수 requestDto 를 메소드 createPost 를 사용해서, Post 로 반환 PostService와 연결
+        //requestDto : 매개변수
+        //메개변수 requestDto 를 메소드 createPost 를 사용해서, Post 로 반환 PostService 와 연결
         return postService.createPost(requestDto);
     }
-
-    @GetMapping("/api/posts")
-    public List<Post> getPosts(){
+    //게시글 목록 조회
+    @GetMapping("/api/posts") //request 종류 Get
+    public List<Post> getPosts(){ //List타입 , Post는 반환타입, 메소드명 getPost, () : 전부 Client 에게로 반환하므로 비워둠
+        //getPost 메소드를 사용해서 postService로 연결
         return postService.getPosts();
     }
-
-    @GetMapping("/api/posts/{id}")
-    public Post searchPosts (@PathVariable Long id) {
+    //선택한 게시글 조회
+    @GetMapping("/api/posts/{id}") //request 종류 Get
+    public Post searchPosts (@PathVariable Long id) { //Post  반환타입, 메소드명 searchPosts
+        //@PathVariable : URL 경로에 변수를 넣어주는것
+        //@PathVariable Long id는 PathVariable 방식으로 Long 타입 id를 가져온다 --> 전체 게시글 중 id 값으로 각각의 게시글 구별
         return postService.searchPosts(id);
+        //id 값을 담은 searchPosts 메소드를 사용해서 , postService 와 연결
     }
-
-    @PutMapping("/api/posts/{id}")
-    public Post updatePost(@PathVariable Long id, @RequestBody PostRequestDto requestDto){
+    //선택한 게시글 수정
+    @PutMapping("/api/posts/{id}") //request 종류 Put
+    public String updatePost(@PathVariable Long id, @RequestBody PostRequestDto requestDto){ //Post 반환타입
+        //requestDto 는 매개변수
+        //id 값을 담은 getBoard 메소드를 사용해서, boardService 와 연결
         return postService.update(id, requestDto);
+        //(id, requestDto): requestDto 에 가져올 내용으로 id 값만 적어서 id만 나오는 건가????
     }
-
-    @DeleteMapping("/api/posts/{id}/{password}")
+    //선택한 게시글 삭제
+    @DeleteMapping("/api/posts/{id}/{password}")//request 종류: DELETE
     public String deletePost(@PathVariable Long id, @PathVariable String password) {
-        postService.deletePost(id, password);
-
-        String msg = "성공입니다.";
-        return msg;
+        //@PathVariable 방식으로 Long 타입 id 와 String 타입 password 를 가져온다.
+        //id 랑 password 는 어디서 가져오는거지????????????
+       return postService.deletePost(id, password);
     }
 }
